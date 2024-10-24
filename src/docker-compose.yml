@@ -3,18 +3,18 @@
 # sudo docker-compose down -v && sudo docker-compose -p modulith up --build
 
 services:
-  catalog.db:
+  eshop.db:
     image: postgres
-    container_name: catalog.db
+    container_name: eshop.db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: catalogdb
+      POSTGRES_DB: eshop.db
       restart: always
     ports:
       - "5441:5432"
     volumes:
-      - postgres_catalog:/var/lib/postgresql/data
+      - postgres_eshop:/var/lib/postgresql/data
 
 volumes:
-  postgres_catalog:
+  postgres_eshop:
