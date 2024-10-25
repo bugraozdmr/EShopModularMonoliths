@@ -1,7 +1,9 @@
 using Catalog.Data;
 using Catalog.Products.Dtos;
 using Catalog.Products.Exceptions;
+using Catalog.Products.Features.CreateProduct;
 using Catalog.Products.Models;
+using FluentValidation;
 using Shared.CQRS;
 
 namespace Catalog.Products.Features.UpdateProduct;
@@ -10,6 +12,19 @@ public record UpdateProductCommand(ProductDto Product)
     : ICommand<UpdateProductResult>;
 
 public record UpdateProductResult(bool IsSuccess);
+
+public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+{
+    public UpdateProductCommandValidator()
+    {
+        RuleFor(x => x.Product.Id).NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.Product.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Product.Description).NotEmpty().WithMessage("Description is required");
+        RuleFor(x => x.Product.Price).NotEmpty().WithMessage("Price is required")
+            .GreaterThan(0).WithMessage("Price must be greater than 0");
+        RuleFor(x => x.Product.Category).NotEmpty().WithMessage("Category is required");
+    }
+}
 
 public class UpdateProductHandler(CatalogDbContext dbContext)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
