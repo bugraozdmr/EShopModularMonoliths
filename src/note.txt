@@ -1,0 +1,14 @@
+Migration almak:
+
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Modules/Catalog --startup-project Bootstrapper/Api
+
+Update Database:
+dotnet ef database update --startup-project Bootstrapper/Api
+
+
+** src altında olmalısın
+Basket için diğer db contex migration almak : (context belirtmek zorundasın yoksa birden çok context var hatası verir)
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Modules/Basket --startup-project Bootstrapper/Api --context BasketDbContext
+
+update işleminde de aynı şekilde context verilmeli
+dotnet ef database update --startup-project Bootstrapper/Api --context BasketDbContext
