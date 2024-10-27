@@ -11,6 +11,7 @@ public static class Extensions
         (this IApplicationBuilder app)
         where TContext : DbContext
     {
+        // Tum contextlerde kullanılacak
         MigrateDatabaseAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
 
         // seed
