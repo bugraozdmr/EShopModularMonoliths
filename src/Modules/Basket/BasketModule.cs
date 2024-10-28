@@ -1,4 +1,5 @@
 using Basket.Data;
+using Basket.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -15,6 +16,11 @@ public static class BasketModule
         IConfiguration configuration)
     {
         // add services to collection
+        // bir interface'i ikisi içinde kullanmak doğru değildir ondan ... Decorated class =>> cachebasket => Basketreposunun modifiyeli hali
+        services.AddScoped<IBasketRepository, BasketRepository>();
+        
+        // bu manuel decoration'dan daha iyi < aynı mantık ama Scrutor,,, DIAbstraction 8.0.1 >= ister
+        services.Decorate<IBasketRepository, CachedBasketRepository>();
         
         var connectionString = configuration.GetConnectionString("Database");
 

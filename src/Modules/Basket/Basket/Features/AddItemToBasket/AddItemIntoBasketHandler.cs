@@ -1,7 +1,6 @@
 using Basket.Basket.Dtos;
-using Basket.Data;
+using Basket.Data.Repository;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Shared.CQRS;
 
 namespace Basket.Basket.Features.AddItemToBasket;
@@ -20,14 +19,19 @@ public class AddItemIntoBasketCommandValidator : AbstractValidator<AddItemIntoBa
     }
 }
 
-public class AddItemIntoBasketHandler(BasketDbContext dbContext)
+public class AddItemIntoBasketHandler
     : ICommandHandler<AddItemIntoBasketCommand, AddItemIntoBasketResult>
 {
+    private readonly IBasketRepository _basketRepository;
+    public AddItemIntoBasketHandler(IBasketRepository basketRepository)
+    {
+        _basketRepository = basketRepository;
+    }
+    
     public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand command, CancellationToken cancellationToken)
     {
-        var shoppingCart = await dbContext.ShoppingCarts
-            .Include(x => x.Items)
-            .SingleOrDefaultAsync(x => x.UserName == command.UserName, cancellationToken);
+        // tackliyor yani
+        var shoppingCart = await _basketRepository.GetBasket(command.UserName,false,cancellationToken);
         
         shoppingCart.AddItem(
             command.ShoppingCartItem.ProductId,
@@ -36,8 +40,9 @@ public class AddItemIntoBasketHandler(BasketDbContext dbContext)
             command.ShoppingCartItem.Price,
             command.ShoppingCartItem.ProductName
             );
-        
-        await dbContext.SaveChangesAsync(cancellationToken);
+     
+        // takip etme dedik get işleminde ondan oldu ??
+        await _basketRepository.SaveChangesAsync(command.UserName,cancellationToken);
 
         return new AddItemIntoBasketResult(shoppingCart.Id);
     }

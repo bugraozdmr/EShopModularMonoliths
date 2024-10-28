@@ -1,7 +1,6 @@
 using Basket.Basket.Exceptions;
-using Basket.Data;
+using Basket.Data.Repository;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Shared.CQRS;
 
 namespace Basket.Basket.Features.RemoveItemFromBasket;
@@ -18,26 +17,29 @@ public class RemoveItemFromBasketCommandValidator : AbstractValidator<RemoveItem
     }
 }
 
-public class RemoveItemFromBasketHandler(BasketDbContext dbContext)
+public class RemoveItemFromBasketHandler
     : ICommandHandler<RemoveItemFromBasketCommand, RemoveItemFromBasketResult>
 
 {
+    private readonly IBasketRepository _basketRepository;
+    public RemoveItemFromBasketHandler(IBasketRepository basketRepository)
+    {
+        _basketRepository = basketRepository;
+    }
+    
     public async Task<RemoveItemFromBasketResult> Handle(RemoveItemFromBasketCommand command, CancellationToken cancellationToken)
     {
-        var shoppingCart = await dbContext.ShoppingCarts
-            .Include(x => x.Items)
-            .SingleOrDefaultAsync(x => x.UserName == command.UserName, cancellationToken);
-
-        if (shoppingCart is null)
-        {
-            throw new BasketNotFoundException(command.UserName);
-        }
+        // takip etme dedik
+        var shoppingCart = await _basketRepository.GetBasket(command.UserName,false,cancellationToken);
         
         // sallamaz var mı yok diye olması gereken
         shoppingCart.RemoveItem(command.ProductId);
         
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await _basketRepository.SaveChangesAsync(command.UserName,cancellationToken);
 
         return new RemoveItemFromBasketResult(shoppingCart.Id);
     }
 }
+
+
+// When tracking is set to false, Entity Framework (EF) won’t monitor the retrieved entities for changes as it usually does with tracking. However, in your case, you’re still able to make changes to the shoppingCart entity and save them because of the way RemoveItem and SaveChangesAsync are functioning together.

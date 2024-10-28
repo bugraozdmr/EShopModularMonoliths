@@ -24,6 +24,7 @@ public class ShoppingCartItem : Entity<Guid>
         ProductName = productName;
     }
     
+    // sadece json call'larında gelcek demek
     [JsonConstructor]
     public ShoppingCartItem(Guid id, Guid shoppingCartId, Guid productId, int quantity, string color, decimal price, string productName)
     {

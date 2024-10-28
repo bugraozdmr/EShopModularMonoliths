@@ -10,11 +10,19 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: eshop.db
-      restart: always
+      # restart: always
     ports:
       - "5441:5432"
     volumes:
       - postgres_eshop:/var/lib/postgresql/data
+  
+  distributedcache:
+    image: redis
+    container_name: distributedcache
+    # restart: always
+    ports:
+      - "6379:6379"
+    
   
   seq:
     image: datalust/seq:latest
