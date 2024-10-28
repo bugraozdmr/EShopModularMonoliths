@@ -1,7 +1,9 @@
 using Basket.Basket.Dtos;
 using Basket.Data.Repository;
+using Catalog.Contracts.Products.Features.GetProductById;
 using FluentValidation;
-using Shared.CQRS;
+using MediatR;
+using Shared.Contracts.CQRS;
 
 namespace Basket.Basket.Features.AddItemToBasket;
 
@@ -23,9 +25,11 @@ public class AddItemIntoBasketHandler
     : ICommandHandler<AddItemIntoBasketCommand, AddItemIntoBasketResult>
 {
     private readonly IBasketRepository _basketRepository;
-    public AddItemIntoBasketHandler(IBasketRepository basketRepository)
+    private readonly ISender _sender;
+    public AddItemIntoBasketHandler(IBasketRepository basketRepository, ISender sender)
     {
         _basketRepository = basketRepository;
+        _sender = sender;
     }
     
     public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand command, CancellationToken cancellationToken)
@@ -33,13 +37,20 @@ public class AddItemIntoBasketHandler
         // tackliyor yani
         var shoppingCart = await _basketRepository.GetBasket(command.UserName,false,cancellationToken);
         
+        
+        var result = await _sender.Send(
+            new GetProductByIdQuery(command.ShoppingCartItem.ProductId));
+        
+        // istek atip ordan fiyati ve urunu getirme
         shoppingCart.AddItem(
             command.ShoppingCartItem.ProductId,
             command.ShoppingCartItem.Quantity,
             command.ShoppingCartItem.Color,
-            command.ShoppingCartItem.Price,
-            command.ShoppingCartItem.ProductName
-            );
+            result.Product.Price,
+            result.Product.Name);
+            // command.ShoppingCartItem.Price,
+            // command.ShoppingCartItem.ProductName
+            // );
      
         // takip etme dedik get işleminde ondan oldu ??
         await _basketRepository.SaveChangesAsync(command.UserName,cancellationToken);

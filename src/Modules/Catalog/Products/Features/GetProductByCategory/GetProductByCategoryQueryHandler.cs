@@ -1,8 +1,7 @@
 using Catalog.Data;
-using Catalog.Products.Dtos;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Shared.CQRS;
+using Shared.Contracts.CQRS;
 
 namespace Catalog.Products.Features.GetProductByCategory;
 

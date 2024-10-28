@@ -1,10 +1,8 @@
 using Catalog.Data;
-using Catalog.Products.Dtos;
 using Catalog.Products.Models;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Logging;
-using Shared.CQRS;
+using Shared.Contracts.CQRS;
 
 namespace Catalog.Products.Features.CreateProduct;
 

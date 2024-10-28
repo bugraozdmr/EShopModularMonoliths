@@ -12,3 +12,6 @@ dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Mo
 
 update işleminde de aynı şekilde context verilmeli
 dotnet ef database update --startup-project Bootstrapper/Api --context BasketDbContext
+
+
+Contractlara ayrılma sebebi başka modülleride kullanmak ve bu önemli düşük bağlanma için

@@ -1,16 +1,18 @@
 using Catalog.Data;
-using Catalog.Products.Dtos;
 using Catalog.Products.Exceptions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Shared.CQRS;
+using Shared.Contracts.CQRS;
 
 namespace Catalog.Products.Features.GetProductById;
 
-public record GetProductByIdQuery(Guid Id)
-    : IQuery<GetProductByIdResult>;
-public record GetProductByIdResult(ProductDto Product);
+// public record GetProductByIdQuery(Guid Id)
+//     : IQuery<GetProductByIdResult>;
+// public record GetProductByIdResult(ProductDto Product);
 
+// sadece expose olan metodlar contractlara taşındı diğerleri zaten modüller arası etkileşim gerektirmediği için kaldı
+
+// contract related işlemler için contracts'a referans verildi
 public class GetProductByIdHandler(CatalogDbContext dbContext)
     : IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
 {

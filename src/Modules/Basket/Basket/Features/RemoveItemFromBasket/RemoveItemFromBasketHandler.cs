@@ -1,7 +1,6 @@
-using Basket.Basket.Exceptions;
 using Basket.Data.Repository;
 using FluentValidation;
-using Shared.CQRS;
+using Shared.Contracts.CQRS;
 
 namespace Basket.Basket.Features.RemoveItemFromBasket;
 

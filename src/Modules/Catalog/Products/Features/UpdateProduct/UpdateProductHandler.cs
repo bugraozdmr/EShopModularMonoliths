@@ -1,10 +1,8 @@
 using Catalog.Data;
-using Catalog.Products.Dtos;
 using Catalog.Products.Exceptions;
-using Catalog.Products.Features.CreateProduct;
 using Catalog.Products.Models;
 using FluentValidation;
-using Shared.CQRS;
+using Shared.Contracts.CQRS;
 
 namespace Catalog.Products.Features.UpdateProduct;
 
