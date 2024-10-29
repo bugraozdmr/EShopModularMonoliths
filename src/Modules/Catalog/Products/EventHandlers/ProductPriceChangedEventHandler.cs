@@ -1,19 +1,19 @@
 using Catalog.Products.Events;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Shared.Messaging.Events;
 
 namespace Catalog.Products.EventHandlers;
 
 public class ProductPriceChangedEventHandler
-    (ILogger<ProductPriceChangedEventHandler> logger)
+    (IBus bus,ILogger<ProductPriceChangedEventHandler> logger)
     : INotificationHandler<ProductPriceChangedEvent>
 {
-    public Task Handle(ProductPriceChangedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ProductPriceChangedEvent notification, CancellationToken cancellationToken)
     {
         logger.LogInformation("Domain Event handled: {DomainEvent}", notification.GetType().Name);        
 
-        return Task.CompletedTask;
-        /*
         // Publish product price changed integration event for update basket prices
         var integrationEvent = new ProductPriceChangedIntegrationEvent
         {
@@ -25,6 +25,7 @@ public class ProductPriceChangedEventHandler
             Price = notification.Product.Price //set updated product price
         };
 
-        await bus.Publish(integrationEvent, cancellationToken);*/
+        // rabbitMQ'e paylaşılcak
+        await bus.Publish(integrationEvent, cancellationToken);
     }
 }

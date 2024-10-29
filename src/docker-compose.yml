@@ -29,12 +29,24 @@ services:
     container_name: seq
     environment:
       - ACCEPT_EULA=Y
-    restart: always
+    #restart: always
     ports:
       # seq icin
       - "5341:5341"
       # seq dashboard
       - "9091:80"
+  
+  messagebus:
+    image: rabbitmq:management
+    container_name: messagebus
+    hostname: ecommerce-mq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    #restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
   postgres_eshop:

@@ -3,5 +3,6 @@ using Shared.DDD;
 
 namespace Catalog.Products.Events;
 
-public class ProductPriceChangedEvent(Product product)
+// record olmazsa taniyamiyor class olmicak yani
+public record ProductPriceChangedEvent(Product Product)
     : IDomainEvent;

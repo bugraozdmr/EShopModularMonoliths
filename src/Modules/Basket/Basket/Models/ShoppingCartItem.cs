@@ -37,6 +37,7 @@ public class ShoppingCartItem : Entity<Guid>
         ProductName = productName;
     }
 
+    // domain üzerinden izleme yaptigi icin update edince domain update oluyor ve save edince yeni değer kaydediliyor
     public void UpdatePrice(decimal newPrice)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(newPrice);

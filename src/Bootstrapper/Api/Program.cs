@@ -2,6 +2,7 @@ using Carter;
 using Serilog;
 using Shared.Exceptions.Handler;
 using Shared.Extensions;
+using Shared.Messaging.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
+
+builder.Services
+    .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly);
+
 
 // module services
 // Add Services to the container
