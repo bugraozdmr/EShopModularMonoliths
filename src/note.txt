@@ -23,3 +23,9 @@ myuser olusturduktan sonra
 http://localhost:9090/realms/myrealm/account/
 
 sonrasında client eklencek --- https://www.udemy.com/course/net-backend-bootcamp-modulith-vsa-ddd-cqrs-and-outbox/learn/lecture/45192445#notes
+
+Order için migration
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Modules/Ordering --startup-project Bootstrapper/Api --context OrderingDbContext
+
+update db
+dotnet ef database update --startup-project Bootstrapper/Api --context OrderingDbContext

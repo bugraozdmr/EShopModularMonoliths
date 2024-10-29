@@ -14,15 +14,15 @@ builder.Host.UseSerilog((context, config) =>
 
 var catalogAssembly = typeof(CatalogModule).Assembly;
 var basketAssembly = typeof(BasketModule).Assembly; 
-//var orderingAssembly = typeof(OrderingModule).Assembly;
+var orderingAssembly = typeof(OrderingModule).Assembly;
 
 // yeni moduller gelince daha kullanisli oldugu anlasilir
 builder.Services.AddCarterWithAssemblies(
-    catalogAssembly,basketAssembly);
+    catalogAssembly,basketAssembly,orderingAssembly);
 
 // fluent valation'da icerde
 builder.Services.AddMediatRWithAssemblies(
-    catalogAssembly, basketAssembly);
+    catalogAssembly, basketAssembly,orderingAssembly);
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
