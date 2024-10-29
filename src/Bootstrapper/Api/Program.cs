@@ -1,4 +1,5 @@
 using Carter;
+using Keycloak.AuthServices.Authentication;
 using Serilog;
 using Shared.Exceptions.Handler;
 using Shared.Extensions;
@@ -31,6 +32,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
 builder.Services
     .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly);
 
+// KeyCloak
+builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 
 // module services
 // Add Services to the container
@@ -50,8 +54,8 @@ var app = builder.Build();
 app.MapCarter();
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler(options => { });
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app
     .UseCatalogModule()

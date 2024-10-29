@@ -15,3 +15,11 @@ dotnet ef database update --startup-project Bootstrapper/Api --context BasketDbC
 
 
 Contractlara ayrılma sebebi başka modülleride kullanmak ve bu önemli düşük bağlanma için
+
+CREATE SCHEMA identity;
+GRANT ALL ON SCHEMA identity to postgres;
+
+myuser olusturduktan sonra
+http://localhost:9090/realms/myrealm/account/
+
+sonrasında client eklencek --- https://www.udemy.com/course/net-backend-bootcamp-modulith-vsa-ddd-cqrs-and-outbox/learn/lecture/45192445#notes
