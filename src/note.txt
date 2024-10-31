@@ -29,3 +29,11 @@ dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Mo
 
 update db
 dotnet ef database update --startup-project Bootstrapper/Api --context OrderingDbContext
+
+
+Domain event handle:
+CheckoutBasketEndpoint => CheckoutBasketHandle => OutboxProcessor => BasketCheckoutIntegrationEventHandler => CreateOrderHandler => Orders => OrderCreatedEvent
+
+publish sonrası yakalanır IntegrationEventHandler'a
+
+en sonda domain event ile işlem bitiyor

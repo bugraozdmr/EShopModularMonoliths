@@ -29,8 +29,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
+// adding modules to async communication
 builder.Services
-    .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly);
+    .AddMassTransitWithAssemblies(builder.Configuration, 
+        catalogAssembly, basketAssembly, orderingAssembly);
 
 // KeyCloak
 builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
